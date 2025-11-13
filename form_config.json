@@ -1,0 +1,55 @@
+{
+  "form_url": "https://colsubsidio.az1.qualtrics.com/jfe/form/SV_dhz8RuGCTqJm1Ui",
+  "pages": [
+    {
+      "page_number": 1,
+      "name": "Página 1 - Información General",
+      "fields": {
+        "text_fields": {
+          "ejemplo_campo_nombre": "Juan Pérez",
+          "ejemplo_campo_email": "correo@ejemplo.com",
+          "ejemplo_campo_telefono": "3001234567"
+        },
+        "radio_buttons": [
+          "Opción de ejemplo 1"
+        ],
+        "radio_by_value": {},
+        "checkboxes": {},
+        "dropdowns": {},
+        "conditional_modals": [
+          {
+            "trigger": "SI",
+            "modal_data": {
+              "text_fields": {
+                "modal_campo_ejemplo": "Valor en el modal"
+              },
+              "radio_by_value": {}
+            }
+          }
+        ]
+      }
+    },
+    {
+      "page_number": 2,
+      "name": "Página 2 - Preguntas Adicionales",
+      "fields": {
+        "text_fields": {},
+        "radio_buttons": [
+          "Respuesta ejemplo página 2"
+        ],
+        "radio_by_value": {},
+        "checkboxes": {},
+        "dropdowns": {},
+        "conditional_modals": []
+      }
+    }
+  ],
+  "notes": [
+    "Este es un archivo de configuración de ejemplo",
+    "Debes inspeccionar el formulario para obtener los IDs reales de los campos",
+    "Usa el script form_inspector.py para ayudarte a identificar los campos",
+    "Los radio_buttons pueden seleccionarse por texto del label",
+    "Los radio_by_value requieren el nombre del campo y su valor",
+    "Los conditional_modals se activan cuando seleccionas ciertas respuestas"
+  ]
+}
