@@ -1,4 +1,18 @@
+# Dependencias para el proyecto de formularios Colsubsidio
+
+# FastAPI y servidor
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
-selenium==4.11.2
+pydantic==2.5.3
 python-multipart==0.0.6
+
+# Selenium para automatización web
+selenium==4.11.2
+
+# Testing
+pytest==7.4.4
+pytest-asyncio==0.23.3
+pytest-cov==4.1.0
+
+# Utilidades
+python-dotenv==1.0.0
