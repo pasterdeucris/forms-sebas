@@ -1,0 +1,28 @@
+{
+  "lugar": "Colegio San José",
+  "nombre_proyecto": "Preescolar Integral 2025",
+  "recomendacion": 4,
+  "recomendacion_text": "Buen programa con áreas de mejora",
+  "satisfaccion": 5,
+  "satisfaccion_text": "Satisfecho en general",
+  "pagina_2": {
+    "proceso_aprendizaje": [10, 10, 10, 10],
+    "acompanamiento_familia": [10, 10, 10, 10, 10],
+    "habilidades_docentes": [10, 10, 10, 10, 10, 10, 10],
+    "auxiliar_salud_nutricion": [10, 10, 10, 10],
+    "personal_administrativo": [10, 10, 10, 10],
+    "actividades_administrativas": [10, 10, 10, 10],
+    "coordinador_pedagogico": [10, 10, 10, 10],
+    "alimentacion": [10, 10, 10],
+    "desarrollo_propuesta": [10, 10, 10, 10],
+    "profesionales_psicosocial": [10, 10, 10, 10, 10],
+    "nutricionista": [10, 10, 10, 10, 10],
+    "evaluacion_aspectos": [10, 10, 10, 10, 10],
+    "apoyo_piscosocial": "No",
+    "contacto_nutricionista": "Si",
+    "especialista_desarrollo": "Si",
+    "pqrs_medios": ["Pagina web", "Correo electronico"],
+    "ha_reclamado": "No",
+    "sugerencias": "Excelente programa. Continuamos comprometidos con la calidad educativa."
+  }
+}
