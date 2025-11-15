@@ -1,0 +1,22 @@
+{
+  "institucion": "Colegio San José",
+  "proyecto": "Preescolar Integral 2025",
+  "recomendacion": 10,
+  "recomendacion_text": "Excelente programa educativo",
+  "satisfaccion": 10,
+  "satisfaccion_text": "Muy satisfecho con el servicio",
+  "pagina_2": {
+    "atencion": [10, 10, 10, 10, 10, 10, 10],
+    "talento_humano": [10, 10, 10, 10, 10, 10, 10, 10, 10],
+    "psicosocial": [10, 10, 10, 10, 10, 10, 10],
+    "dinamizadores": [10, 10, 10, 10, 10, 10, 10],
+    "contacto_dinamizador": "Si",
+    "aspectos_dinamizador": [10, 10, 10, 10, 10, 10, 10],
+    "contacto_coordinador": "Si",
+    "aspectos_satisfaccion": [10, 10, 10, 10, 10],
+    "pqrs_medios": ["Pagina web", "Correo electronico", "Telefonicamente", "Codigo QR"],
+    "ha_reclamado": "No",
+    "desarrollo_propuesta": [10, 10, 10, 10, 10, 10, 10],
+    "sugerencias": "Excelente programa. Continuamos comprometidos con la calidad educativa."
+  }
+}
