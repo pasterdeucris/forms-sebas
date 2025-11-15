@@ -677,11 +677,7 @@ class ColsubsidioFormFiller:
             # self.hacer_click_siguiente()
             # self.llenar_pagina_3(...)
             
-            print("\n¡Formulario completado exitosamente!")
-            print("NOTA: El formulario NO ha sido enviado. Revisa los datos antes de enviar.")
-            
-            # Mantener el navegador abierto para revisión
-            input("\nPresiona Enter para cerrar el navegador...")
+            self.driver.quit()
             
         except Exception as e:
             print(f"\nError durante la ejecución: {e}")

@@ -73,7 +73,41 @@ class ColsubsidioFormFiller:
     def esperar_carga(self, segundos=1):
         """Espera un tiempo específico"""
         time.sleep(segundos)
-    
+
+    def hacer_clic_boton_siguiente_final(self):
+        """
+        Hace clic en el botón de siguiente/continuar
+        """
+        print("Haciendo clic en botón siguiente...")
+        
+        xpath_boton = "/html/body/div[3]/div/form/div/div[2]/div[1]/div[3]/div[2]/input[2]"
+        
+        try:
+            # Esperar a que el botón sea clickeable
+            boton = self.wait.until(
+                EC.element_to_be_clickable((By.XPATH, xpath_boton))
+            )
+            
+            # Scroll al botón
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", boton)
+            self.esperar_carga(0.5)
+            
+            try:
+                # Método 1: Click normal
+                boton.click()
+                print("✓ Clic en botón siguiente exitoso")
+                
+            except Exception:
+                print("Método 1 falló, intentando con JavaScript...")
+                # Método 2: Click con JavaScript
+                self.driver.execute_script("arguments[0].click();", boton)
+                print("✓ Clic en botón siguiente exitoso (JavaScript)")
+            
+            self.esperar_carga(1)
+            
+        except Exception as e:
+            print(f"✗ Error al hacer clic en botón siguiente: {e}")
+            raise
     def llenar_pagina_1(self, institucion, proyecto, recomendacion=10, recon_text = "g", satisfaccion=10, sastisf_text = "gg"):
         """
         Llena la primera página del formulario
@@ -441,7 +475,7 @@ class ColsubsidioFormFiller:
             texto (str): Texto de sugerencias
         """
         try:
-            sugerencias_field = self.driver.find_element(By.CSS_SELECTOR, "textarea[aria-label*='sugerencias']")
+            sugerencias_field = self.driver.find_element(By.CSS_SELECTOR, "#QR\~QID51")
             sugerencias_field.clear()
             sugerencias_field.send_keys(texto)
         except Exception as e:
@@ -497,8 +531,10 @@ class ColsubsidioFormFiller:
         self.llenar_pagina_2_seccion_desarrollo_propuesta(datos_pagina_2.get('desarrollo_propuesta'))
         
         # Sugerencias
-        if 'sugerencias' in datos_pagina_2:
-            self.llenar_sugerencias(datos_pagina_2['sugerencias'])
+        
+        self.llenar_sugerencias(datos_pagina_2['sugerencias'])
+
+        # #QR\~QID51    
         
         print("\n" + "="*80)
         print("PÁGINA 2 COMPLETADA")
@@ -532,15 +568,13 @@ class ColsubsidioFormFiller:
             # Llenar página 2
             self.llenar_pagina_2(datos['pagina_2'])
             
+            self.hacer_clic_boton_siguiente_final()
+            self.driver.quit()
             # Aquí puedes agregar más páginas si las hay
             # self.hacer_click_siguiente()
             # self.llenar_pagina_3(...)
             
-            print("\n¡Formulario completado exitosamente!")
-            print("NOTA: El formulario NO ha sido enviado. Revisa los datos antes de enviar.")
             
-            # Mantener el navegador abierto para revisión
-            input("\nPresiona Enter para cerrar el navegador...")
             
         except Exception as e:
             print(f"\nError durante la ejecución: {e}")
