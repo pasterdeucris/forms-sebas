@@ -390,9 +390,9 @@ class ColsubsidioFormFiller:
         proyecto_field.send_keys(proyecto)
        
         # Seleccionar nivel de recomendación (0-10)
-        proyecto_field = self.driver.find_element(By.CSS_SELECTOR, "#QR\~QID78")
-        proyecto_field.clear()
-        proyecto_field.send_keys(unidad)
+        proyecto_field_2 = self.driver.find_element(By.CSS_SELECTOR, "#QR\~QID78")
+        proyecto_field_2.clear()
+        proyecto_field_2.send_keys(unidad)
        
 
         radio_id = f"/html/body/div[3]/div/form/div/div[2]/div[1]/div[3]/div[1]/div[10]/div[3]/div/fieldset/div/table/tbody/tr[2]/td[{recomendacion+1}]/span/label"
