@@ -2,25 +2,17 @@
 Endpoints de la API para llenar los formularios automatizados
 """
 
-from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi import APIRouter, HTTPException
 from app.models import (
     Form1Request,
     Form2Request,
     Form3Request,
     Form4Request,
-    FormResponse
+    FormResponse,
+    TaskStatusResponse
 )
-import sys
-import os
-
-# Agregar el directorio raíz al path para importar los scripts de formularios
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-
-# Importar las clases de los formularios
-from form1 import ColsubsidioFormFiller as Form1Filler
-from form2 import ColsubsidioFormFiller as Form2Filler
-from form3 import ColsubsidioFormFiller as Form3Filler
-from form4 import ColsubsidioFormFiller as Form4Filler
+from app.tasks import execute_form_task
+from app.celery_app import celery_app
 
 router = APIRouter(
     prefix="/api/forms",
@@ -28,24 +20,8 @@ router = APIRouter(
 )
 
 
-def execute_form_filler(form_filler_class, data: dict):
-    """
-    Ejecuta el llenado de un formulario en el background
-
-    Args:
-        form_filler_class: Clase del formulario a ejecutar
-        data: Datos del formulario
-    """
-    try:
-        filler = form_filler_class()
-        filler.ejecutar(data)
-    except Exception as e:
-        print(f"Error ejecutando formulario: {e}")
-        raise
-
-
 @router.post("/form1", response_model=FormResponse)
-async def llenar_formulario_1(request: Form1Request, background_tasks: BackgroundTasks):
+async def llenar_formulario_1(request: Form1Request):
     """
     Llena el Formulario 1 - Evaluación Preescolar Integrales v1
 
@@ -53,25 +29,29 @@ async def llenar_formulario_1(request: Form1Request, background_tasks: Backgroun
     el proceso de llenado automático usando Selenium.
 
     **URL del formulario**: https://colsubsidio.az1.qualtrics.com/jfe/form/SV_dhz8RuGCTqJm1Ui
+    
+    **Retorna**: Un objeto con el task_id que puede usarse para consultar el estado
+    de la tarea en el endpoint /api/forms/task/{task_id}
     """
     try:
         # Convertir el modelo Pydantic a diccionario
         datos = request.model_dump()
 
-        # Ejecutar el formulario en background
-        background_tasks.add_task(execute_form_filler, Form1Filler, datos)
+        # Ejecutar el formulario en Celery
+        task = execute_form_task.delay('form1', datos)
 
         return FormResponse(
             success=True,
-            message="Formulario 1 en proceso de llenado. Se ejecutará en segundo plano.",
-            form_type="form1"
+            message="Formulario 1 encolado exitosamente. Use el task_id para consultar el estado.",
+            form_type="form1",
+            task_id=task.id
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error procesando formulario: {str(e)}")
 
 
 @router.post("/form2", response_model=FormResponse)
-async def llenar_formulario_2(request: Form2Request, background_tasks: BackgroundTasks):
+async def llenar_formulario_2(request: Form2Request):
     """
     Llena el Formulario 2 - Evaluación Preescolar Integrales v2
 
@@ -79,25 +59,29 @@ async def llenar_formulario_2(request: Form2Request, background_tasks: Backgroun
     el proceso de llenado automático usando Selenium.
 
     **URL del formulario**: https://colsubsidio.az1.qualtrics.com/jfe/form/SV_6VaaNLR3jmRV4pw
+    
+    **Retorna**: Un objeto con el task_id que puede usarse para consultar el estado
+    de la tarea en el endpoint /api/forms/task/{task_id}
     """
     try:
         # Convertir el modelo Pydantic a diccionario
         datos = request.model_dump()
 
-        # Ejecutar el formulario en background
-        background_tasks.add_task(execute_form_filler, Form2Filler, datos)
+        # Ejecutar el formulario en Celery
+        task = execute_form_task.delay('form2', datos)
 
         return FormResponse(
             success=True,
-            message="Formulario 2 en proceso de llenado. Se ejecutará en segundo plano.",
-            form_type="form2"
+            message="Formulario 2 encolado exitosamente. Use el task_id para consultar el estado.",
+            form_type="form2",
+            task_id=task.id
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error procesando formulario: {str(e)}")
 
 
 @router.post("/form3", response_model=FormResponse)
-async def llenar_formulario_3(request: Form3Request, background_tasks: BackgroundTasks):
+async def llenar_formulario_3(request: Form3Request):
     """
     Llena el Formulario 3 - Evaluación Preescolar Integrales v3
 
@@ -105,25 +89,29 @@ async def llenar_formulario_3(request: Form3Request, background_tasks: Backgroun
     el proceso de llenado automático usando Selenium.
 
     **URL del formulario**: https://colsubsidio.az1.qualtrics.com/jfe/form/SV_cZQUXOINZrCcUx8
+    
+    **Retorna**: Un objeto con el task_id que puede usarse para consultar el estado
+    de la tarea en el endpoint /api/forms/task/{task_id}
     """
     try:
         # Convertir el modelo Pydantic a diccionario
         datos = request.model_dump()
 
-        # Ejecutar el formulario en background
-        background_tasks.add_task(execute_form_filler, Form3Filler, datos)
+        # Ejecutar el formulario en Celery
+        task = execute_form_task.delay('form3', datos)
 
         return FormResponse(
             success=True,
-            message="Formulario 3 en proceso de llenado. Se ejecutará en segundo plano.",
-            form_type="form3"
+            message="Formulario 3 encolado exitosamente. Use el task_id para consultar el estado.",
+            form_type="form3",
+            task_id=task.id
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error procesando formulario: {str(e)}")
 
 
 @router.post("/form4", response_model=FormResponse)
-async def llenar_formulario_4(request: Form4Request, background_tasks: BackgroundTasks):
+async def llenar_formulario_4(request: Form4Request):
     """
     Llena el Formulario 4 - Evaluación Preescolar Integrales v4
 
@@ -131,35 +119,92 @@ async def llenar_formulario_4(request: Form4Request, background_tasks: Backgroun
     el proceso de llenado automático usando Selenium.
 
     **URL del formulario**: https://colsubsidio.az1.qualtrics.com/jfe/form/SV_39rtVbeLsFoU9Bc
+    
+    **Retorna**: Un objeto con el task_id que puede usarse para consultar el estado
+    de la tarea en el endpoint /api/forms/task/{task_id}
     """
     try:
         # Convertir el modelo Pydantic a diccionario
         datos = request.model_dump()
 
-        # Ejecutar el formulario en background
-        background_tasks.add_task(execute_form_filler, Form4Filler, datos)
+        # Ejecutar el formulario en Celery
+        task = execute_form_task.delay('form4', datos)
 
         return FormResponse(
             success=True,
-            message="Formulario 4 en proceso de llenado. Se ejecutará en segundo plano.",
-            form_type="form4"
+            message="Formulario 4 encolado exitosamente. Use el task_id para consultar el estado.",
+            form_type="form4",
+            task_id=task.id
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error procesando formulario: {str(e)}")
 
 
+@router.get("/task/{task_id}", response_model=TaskStatusResponse)
+async def get_task_status(task_id: str):
+    """
+    Consulta el estado de una tarea de Celery
+    
+    **Descripción**: Este endpoint permite consultar el estado de una tarea
+    previamente encolada usando su task_id.
+    
+    **Estados posibles**:
+    - PENDING: La tarea está esperando ser ejecutada
+    - STARTED: La tarea ha comenzado a ejecutarse
+    - PROGRESS: La tarea está en progreso
+    - SUCCESS: La tarea se completó exitosamente
+    - FAILURE: La tarea falló
+    - RETRY: La tarea está siendo reintentada
+    """
+    try:
+        task_result = celery_app.AsyncResult(task_id)
+        
+        response = TaskStatusResponse(
+            task_id=task_id,
+            status=task_result.status,
+            result=task_result.result if task_result.successful() else None,
+            error=str(task_result.info) if task_result.failed() else None,
+            meta=task_result.info if task_result.state in ['STARTED', 'PROGRESS'] else None
+        )
+        
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error consultando tarea: {str(e)}")
+
+
 @router.get("/health")
 async def health_check():
     """
-    Verifica el estado de la API
+    Verifica el estado de la API y la conexión con Celery/Redis
     """
-    return {
-        "status": "healthy",
-        "message": "API de formularios funcionando correctamente",
-        "endpoints_disponibles": [
-            "/api/forms/form1",
-            "/api/forms/form2",
-            "/api/forms/form3",
-            "/api/forms/form4"
-        ]
-    }
+    try:
+        # Verificar conexión con Redis/Celery
+        inspector = celery_app.control.inspect()
+        active_workers = inspector.active()
+        
+        return {
+            "status": "healthy",
+            "message": "API de formularios funcionando correctamente",
+            "celery_workers": len(active_workers) if active_workers else 0,
+            "endpoints_disponibles": [
+                "/api/forms/form1",
+                "/api/forms/form2",
+                "/api/forms/form3",
+                "/api/forms/form4",
+                "/api/forms/task/{task_id}"
+            ]
+        }
+    except Exception as e:
+        return {
+            "status": "degraded",
+            "message": "API funcionando pero Celery no está disponible",
+            "error": str(e),
+            "endpoints_disponibles": [
+                "/api/forms/form1",
+                "/api/forms/form2",
+                "/api/forms/form3",
+                "/api/forms/form4",
+                "/api/forms/task/{task_id}"
+            ]
+        }
+

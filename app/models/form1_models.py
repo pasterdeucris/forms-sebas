@@ -83,3 +83,14 @@ class FormResponse(BaseModel):
     success: bool
     message: str
     form_type: str
+    task_id: Optional[str] = Field(None, description="ID de la tarea de Celery para seguimiento")
+
+
+class TaskStatusResponse(BaseModel):
+    """Respuesta para consultar el estado de una tarea"""
+    task_id: str
+    status: str = Field(..., description="Estado de la tarea: PENDING, STARTED, PROGRESS, SUCCESS, FAILURE, RETRY")
+    result: Optional[dict] = Field(None, description="Resultado de la tarea si está completada")
+    error: Optional[str] = Field(None, description="Mensaje de error si la tarea falló")
+    meta: Optional[dict] = Field(None, description="Metadatos adicionales de la tarea")
+

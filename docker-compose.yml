@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Servicio Redis - Broker y backend de resultados para Celery
+  redis:
+    image: redis:7-alpine
+    container_name: formularios-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - formularios-network
+
+  # Servicio Celery Worker - Procesa las tareas RPA
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: formularios-celery-worker
+    command: celery -A app.celery_app worker --loglevel=info --pool=solo
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    networks:
+      - formularios-network
+    restart: unless-stopped
+
+  # Servicio FastAPI - API REST (opcional para desarrollo completo en Docker)
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: formularios-api
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    networks:
+      - formularios-network
+    restart: unless-stopped
+
+networks:
+  formularios-network:
+    driver: bridge
+
+volumes:
+  redis_data:
